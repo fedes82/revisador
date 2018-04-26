@@ -1,0 +1,183 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import Image kivy.uix.image
+#:import CheckBox kivy.uix.checkbox
+
+
+<Pantalla_Inicio>:
+    info_carpeta: info_carpeta
+    filechooser: filechooser
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        BoxLayout:
+            padding: 30
+            orientation: 'horizontal'
+            FileChooserIconView:
+                #rootpath: '/home/monitoreo/Escritorio/SESIONES'
+                rootpath: 'sesion/'
+                id: filechooser
+                dirselect: True
+                #filters: app.filtro_carpetas_vacias()
+                on_selection: root.mostar_info_carpeta(filechooser.path, filechooser.selection)
+            BoxLayout:
+                orientation: 'vertical'
+                #size_hint: 0.3, None
+                Label:
+                    size_hint: 1, 0.2
+                    text: 'INFORMACION DE LA SESION'
+                    font_size: '15sp'
+                Label:
+                    font_size: '30sp'
+                    id: info_carpeta
+                Label:
+                    text:''
+                Button:
+                    size_hint: 1, 0.8
+                    id:btn_local
+                    text: 'Carpetas Locales'
+                    on_release: 
+                        #filechooser.rootpath = '/home/fede/Escritorio/SESIONES'
+                        #filechooser.path =  '/home/fede/Escritorio/SESIONES'
+                        filechooser.rootpath = 'sesion/'
+                        filechooser.path =  'sesion/'
+                Button:
+                    size_hint:  1, 0.8
+                    id:btn_externo
+                    text: 'Carpeta Externa'
+                    on_release: 
+                        #filechooser.rootpath = '/media/fede'
+                        #filechooser.path = '/media/fede'
+                        filechooser.rootpath = '/media/fede'
+                        filechooser.path = '/media/fede'
+                    
+        BoxLayout:
+            size_hint_y: None
+            height: 60
+            Button:
+                text: "Salir"
+                font_size: '20sp'
+                on_release: exit()
+
+            Button:
+                text: "Cargar"
+                font_size: '20sp'
+                on_release: 
+                    root.path = filechooser.path
+                    root.selection =filechooser.selection
+                    root.load(filechooser.path, filechooser.selection)
+                    print 'lalala'
+                    app.cargar()
+
+<Pantalla_Revisar>:
+    btn_playpausa: btn_playpausa
+    velocidad: velocidad
+    comentario: comentario
+    img1:img1
+    img2:img2
+    img3:img3
+    linea_de_tiempo:linea_de_tiempo
+    on_enter:
+        root.indice = 0
+        root.leer_archivos()
+        root.crear_fullscreens()
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                #size_hint: 1,0.45
+                #size: 1300, 600
+                orientation: 'horizontal'
+                spacing: 10
+                BoxLayout:
+                    size_hint:0.2,1
+                    orientation: 'vertical'
+                    Button:
+                        text: '<'
+                        font_size: '20sp'
+                        on_release: root.anterior()
+                    Button:
+                        text: ' < Marca '
+                        font_size: '20sp'
+                        on_release:root.marca_anterior()
+                    Button:
+                        text: 'Comentar' 
+                        font_size:'20sp'
+                        #on_release: root.adherir_comentario()
+                        on_release: root.pre_marcar()
+                ImageButton:
+                    id:img1
+                    source: 'imagenCamara1.jpg'
+                    on_release: root.mostrar_pantalla_completa_img1()
+                BoxLayout:
+                    size_hint:0.2,1
+                    orientation: 'vertical'
+                     #   spacing: 10
+                    Button:
+                        text: '>'
+                        font_size:'20sp'
+                        on_release: root.siguiente()
+                    Button:
+                        text:'Marca >'
+                        font_size:'20sp'
+                        on_release: root.marca_siguiente()
+                    TextInput:
+                        #size_hint: .6,.2
+                        pos_hint: {'center_x': 0.5}
+                        id:comentario
+                        text: ''    
+                        
+            BoxLayout:
+                #size_hint: 1,.2
+                orientation: 'horizontal'
+        #        Button:
+            #            text: 'Marcar Imagen'
+            #            on_release: root.pre_marcar()
+            #        BoxLayout:
+            #            orientation: 'horizontal'
+                        
+                    
+                
+                ImageButton:
+                    id:img2
+                    source: 'imagenCamara2.jpg'
+                    on_release: root.mostrar_pantalla_completa_img2()
+                BoxLayout:
+                    size_hint:0.1,0.3
+                    orientation:'vertical'
+                    Button:
+                        id:btn_playpausa
+                        text:'PLAY'
+                        on_release: root.play()
+                    Label:
+                        text: 'Vel [ms]'
+                    IntInput:
+                        #pos_hint: {'center_x': .5}
+                        #size_hint: 0.2 ,1
+                        id:velocidad
+                        text:''
+                ImageButton:
+                    id:img3
+                    source: 'imagenCamara3.jpg'
+                    on_release: root.mostrar_pantalla_completa_img3()
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.04
+            Label:
+                size_hint: 0.3,1
+                id: valor_slider
+                text: str(int(linea_de_tiempo.value))
+            Slider:
+                id:linea_de_tiempo
+                value: 0
+                step: 1
+                on_value: root.saltar_a_valor()
+            
+        Button:
+            size_hint: 1,0.04
+            text:'Volver'
+            pos_hint: {'center_x': .5}
+            on_release: app.volver()
+
