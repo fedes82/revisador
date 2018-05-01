@@ -10,16 +10,29 @@
         size: root.size
         pos: root.pos
         orientation: "vertical"
-        BoxLayout:
+        Label:
+			size_hint:1,0.1
+			text: 'Seleccione sesion'
+			font_size: '30sp'
+		BoxLayout:
             padding: 30
             orientation: 'horizontal'
-            FileChooserIconView:
+            NavegadorArchivos:
                 #rootpath: '/home/monitoreo/Escritorio/SESIONES'
-                rootpath: 'sesion/'
+                #rootpath: 'sesion/'
                 id: filechooser
                 dirselect: True
+                show_hidden: False
                 #filters: app.filtro_carpetas_vacias()
                 on_selection: root.mostar_info_carpeta(filechooser.path, filechooser.selection)
+				on_success: 
+					root.path = filechooser.path
+                    root.selection =filechooser.selection
+                    root.load(filechooser.path, filechooser.selection)
+                    print 'lalala'
+                    app.cargar()
+				on_canceled: exit()
+				
             BoxLayout:
                 orientation: 'vertical'
                 #size_hint: 0.3, None
@@ -28,46 +41,49 @@
                     text: 'INFORMACION DE LA SESION'
                     font_size: '15sp'
                 Label:
-                    font_size: '30sp'
+                    font_size: '20sp'
                     id: info_carpeta
-                Label:
-                    text:''
-                Button:
-                    size_hint: 1, 0.8
-                    id:btn_local
-                    text: 'Carpetas Locales'
-                    on_release: 
-                        #filechooser.rootpath = '/home/fede/Escritorio/SESIONES'
+                #Label:
+                #    text:''
+				Image:
+					size_hint: 1,0.9
+					source: root.source_preview
+                #Button:
+                #    size_hint: 1, 0.8
+                #    id:btn_local
+                #    text: 'Carpetas Locales lala'
+                #    on_release: 
+                #        #filechooser.rootpath = '/home/fede/Escritorio/SESIONES'
                         #filechooser.path =  '/home/fede/Escritorio/SESIONES'
-                        filechooser.rootpath = 'sesion/'
-                        filechooser.path =  'sesion/'
-                Button:
-                    size_hint:  1, 0.8
-                    id:btn_externo
-                    text: 'Carpeta Externa'
-                    on_release: 
+                        #filechooser.rootpath = 'sesion/'
+                        #filechooser.path =  'sesion/'
+                #Button:
+                #    size_hint:  1, 0.8
+                #    id:btn_externo
+                #    text: 'Carpeta Externa'
+                #    on_release: 
                         #filechooser.rootpath = '/media/fede'
                         #filechooser.path = '/media/fede'
-                        filechooser.rootpath = '/media/fede'
-                        filechooser.path = '/media/fede'
+                #        filechooser.rootpath = '/media/fede'
+                #        filechooser.path = '/media/fede'
                     
-        BoxLayout:
-            size_hint_y: None
-            height: 60
-            Button:
-                text: "Salir"
-                font_size: '20sp'
-                on_release: exit()
-
-            Button:
-                text: "Cargar"
-                font_size: '20sp'
-                on_release: 
-                    root.path = filechooser.path
-                    root.selection =filechooser.selection
-                    root.load(filechooser.path, filechooser.selection)
-                    print 'lalala'
-                    app.cargar()
+        #BoxLayout:
+        #    size_hint_y: None
+        #    height: 60
+        #    Button:
+        #        text: "Salir"
+        #        font_size: '20sp'
+        #        on_release: exit()
+		#
+        #    Button:
+        #        text: "Cargar"
+        #        font_size: '20sp'
+        #        on_release: 
+        #            root.path = filechooser.path
+        #            root.selection =filechooser.selection
+        #            root.load(filechooser.path, filechooser.selection)
+        #            print 'lalala'
+        #            app.cargar()
 
 <Pantalla_Revisar>:
     btn_playpausa: btn_playpausa

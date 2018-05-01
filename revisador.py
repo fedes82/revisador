@@ -19,7 +19,7 @@ Logger.addHandler(fh)
 DEBUG = True
 ####---------------
 
-
+from kivy.garden.filebrowser import FileBrowser
 #kivy imports
 from kivy.app import App
 from kivy.lang import Builder
@@ -62,6 +62,7 @@ from os import system
 from os import makedirs
 from os import listdir
 from os.path import expanduser
+#import winshell
 import shutil
 import time
 import os.path
@@ -138,6 +139,7 @@ CARPETA_SESION_FOTOS = 'sesion/'
 CARPETA_TEMPORAL = 'temporales/'
 IMG_DEFAULT = 'img_default/imgDefault.jpg'
 COMENTARIO = 'comentario.txt'
+IMG_DEFAULT_PREV = 'img_default/preview_no_disponible.png'
 
 #globales revisador
 archivos_cam1 = []
@@ -187,12 +189,20 @@ class MemoryImage(Image):
         with self.canvas:
             self.texture = ImageLoaderPygame(data).texture
 
+class NavegadorArchivos(FileBrowser):
+	
+	select_string = 'Cargar'
+	cancel_string = 'Salir'
+	
 
+			
 class Pantalla_Inicio(Screen):
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
     selection = ''
     path =''
+    source_preview = StringProperty(IMG_DEFAULT_PREV)
+
     
     def load(self,path,filename):
         global CARPETA_SESION_FOTOS
@@ -220,24 +230,49 @@ class Pantalla_Inicio(Screen):
     ## fin del revisador 
     
     def mostar_info_carpeta(self,path,filename):
+        #print 'archivo seleccionados: ',path,filename
         if filename == []:
             if os.path.exists(path +'/info.txt'):
                 with open(path +'/info.txt','r') as info:
                     self.info_carpeta.text = info.read()
+                    arch_fotos = os.listdir(filename)
+                    arch_fotos.sort()
+                    print 'los arch son',arch_fotos
+                    if arch_fotos:
+                        #print filename + '/'+arch_fotos[3]
+                        for i in range(len(arch_fotos)):
+                            if arch_fotos[i].endswith('.jpg'):
+                                self.source_preview = filename + '/'+arch_fotos[i]
+                                break
+                        
             else:
                 self.info_carpeta.text = 'NO HAY INFORMACION SOBRE LA SESION'
+                self.source_preview = IMG_DEFAULT_PREV
         elif filename[0].endswith('.jpg'):
+            print 'archivo ', filename[0]
+            self.source_preview = filename[0]
             if os.path.exists(path +'/info.txt'):
                 with open(path +'/info.txt','r') as info:
                     self.info_carpeta.text = info.read()
             else:
                 self.info_carpeta.text = 'NO HAY INFORMACION SOBRE LA SESION'
+                self.source_preview = IMG_DEFAULT_PREV
         else:
             if os.path.exists(filename[0]+'/info.txt'):
                 with open(filename[0] +'/info.txt','r') as info:
                     self.info_carpeta.text = info.read()
+                    arch_fotos = os.listdir(filename[0])
+                    arch_fotos.sort()
+                    if arch_fotos:
+                       # print filename[0] + '/'+arch_fotos[4]
+                        for i in range(len(arch_fotos)):
+                            if arch_fotos[i].endswith('.jpg'):
+                                self.source_preview = filename[0] + '/'+arch_fotos[i]
+                                break
+                       
             else:
                 self.info_carpeta.text = 'NO HAY INFORMACION SOBRE LA SESION'
+                self.source_preview = IMG_DEFAULT_PREV
 
   #      Clock.schedule_once(self.cerrar_popup_reiniciar,5)
 
@@ -705,7 +740,7 @@ def limpiar_lista(sesion):
 class revisadorApp(App):
     #Configuracion de operar
     icon = ICONO
-    title = 'REFEOCA VIEWER'
+    title = 'REFOCA VIEWER'
     path = ''
     selection = ''
     def build(self):
