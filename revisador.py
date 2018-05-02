@@ -19,7 +19,17 @@ Logger.addHandler(fh)
 DEBUG = True
 ####---------------
 
-from kivy.garden.filebrowser import FileBrowser
+"""
+ original,
+--- from kivy.garden.filebrowser import FileBrowser 
+ lo cambio para compilar:
+ You could just copy the navigationdrawer code 
+from C:\Users\me\.kivy\garden\garden.navigationdrawer to your app directory,
+ call the folder 'navigationdrawer' and replace the import with 
+-- from navigationdrawer import NavigationDrawer
+ 
+ """
+from filebrowser import FileBrowser
 #kivy imports
 from kivy.app import App
 from kivy.lang import Builder
@@ -77,12 +87,12 @@ import copy
 import textwrap
 import subprocess
 from functools import partial
-from tendo import singleton
+#from tendo import singleton
 from random import uniform
 import signal
 import sys
 
-me = singleton.SingleInstance()
+#me = singleton.SingleInstance()
 #para multiprocessing
 from multiprocessing.sharedctypes import Value
 from ctypes import  c_int
