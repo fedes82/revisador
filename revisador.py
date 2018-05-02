@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #version
-VERSION = 2
+VERSION = 1.0
 ##-----------PARA LOG
 import logging
 from logging import handlers
@@ -36,25 +36,20 @@ from kivy.lang import Builder
 from kivy.cache import Cache
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition, NoTransition
 from kivy.uix.image import Image
-from kivy.properties import ListProperty
+#from kivy.properties import ListProperty
 from kivy.properties import StringProperty
 from kivy.properties import ObjectProperty
-from kivy.properties import BooleanProperty
-from kivy.properties import BoundedNumericProperty
-from kivy.properties import NumericProperty
+#from kivy.properties import BooleanProperty
 from kivy.clock import Clock
-from kivy.graphics import Color, Rectangle
 from kivy.graphics.texture import Texture
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.slider import Slider
-from kivy.core.image import Image as MemImage
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.core.audio import SoundLoader
 
 #PIL imports
 from PIL import Image as PILImage
@@ -66,37 +61,23 @@ from PIL import ImageDraw as PILImageDraw
 import socket
 import io
 from time import sleep
-import atexit
+from sys import exit
 from os import remove 
 from os import system
 from os import makedirs
 from os import listdir
 from os.path import expanduser
-#import winshell
 import shutil
 import time
 import os.path
-import datetime
-import StringIO
-import threading
-import Queue
-import multiprocessing as mp
-import struct
-import json
+
+
+
 import copy
 import textwrap
-import subprocess
-from functools import partial
-#from tendo import singleton
-from random import uniform
 import signal
 import sys
 
-#me = singleton.SingleInstance()
-#para multiprocessing
-from multiprocessing.sharedctypes import Value
-from ctypes import  c_int
-from ctypes import c_float
 
 
 ### ESTO NO SE SI HACE FALTA, ES POR LAS DUDAS, PARA USAR TODOS LOS 
@@ -109,41 +90,14 @@ system("taskset -p 0xff %d" % os.getpid())
 Window.maximize()
 
 
-
-
-class PerroGuardian(Exception):
-
-    def __init__(self, time=5):
-        self.time = time
-    
-    def __enter__(self):
-        signal.signal(signal.SIGALRM, self.handler)
-        signal.alarm(self.time)
-    
-    def __exit__(self, type, value, traceback):
-        signal.alarm(0)
-    
-    def handler(self, signum, frame):
-        raise self
-
-
-    def __str__(self):
-        return "TIMEOUT del codigo subsiguiente, tardo mas de {} segundos".format( self.time)
-
 #CONSTANTES
 ICONO = 'img_default/icono.png'
 
 
-#constantes operar
-#CARPETA_SESIONES = expanduser("~")+'/Escritorio/SESIONES/'
-CARPETA_SESIONES = 'sesion/'
+
 #constante configuracion
-SIN_CONEXION = 'img_default/error-conexion.jpg'
-SONIDO_ERROR = 'error.mp3'
-#  constantes diagnostico
-CONEXION_OK = 'img_default/ok.png'
-CONEXION_FAIL = 'img_default/fail.png'
-ENCODER_DIAGNOSTICO = 'temporales/metros_diagnostico.txt'
+
+
 ### constantres revisador
 CARPETA_SESION_FOTOS = 'sesion/'
 CARPETA_TEMPORAL = 'temporales/'
@@ -183,29 +137,12 @@ class TxtInput(TextInput):
 
 
 
-class MemoryImage(Image):
-    """Display an image already loaded in memory."""
-    memory_data = ObjectProperty(None)
-
-    #def __init__(self, memory_data, **kwargs):
-        #super(MemoryImage, self).__init__(**kwargs)
-
-        #self.memory_data = memory_data
-
-    def on_memory_data(self, *args):
-        """Load image from memory."""
-        data = StringIO.StringIO(self.memory_data)
-        #data = io.BytesIO(self.memory_data)
-        with self.canvas:
-            self.texture = ImageLoaderPygame(data).texture
-
 class NavegadorArchivos(FileBrowser):
 	
 	select_string = 'Cargar'
 	cancel_string = 'Salir'
 	
 
-			
 class Pantalla_Inicio(Screen):
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
@@ -213,7 +150,6 @@ class Pantalla_Inicio(Screen):
     path =''
     source_preview = StringProperty(IMG_DEFAULT_PREV)
 
-    
     def load(self,path,filename):
         global CARPETA_SESION_FOTOS
         print path, filename
@@ -750,7 +686,7 @@ def limpiar_lista(sesion):
 class revisadorApp(App):
     #Configuracion de operar
     icon = ICONO
-    title = 'REFOCA VIEWER'
+    title = 'VISOR REFOCA'
     path = ''
     selection = ''
     def build(self):

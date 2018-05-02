@@ -18,12 +18,9 @@
             padding: 30
             orientation: 'horizontal'
             NavegadorArchivos:
-                #rootpath: '/home/monitoreo/Escritorio/SESIONES'
-                #rootpath: 'sesion/'
                 id: filechooser
                 dirselect: True
                 show_hidden: False
-                #filters: app.filtro_carpetas_vacias()
                 on_selection: root.mostar_info_carpeta(filechooser.path, filechooser.selection)
 				on_success: 
 					root.path = filechooser.path
@@ -35,7 +32,6 @@
 				
             BoxLayout:
                 orientation: 'vertical'
-                #size_hint: 0.3, None
                 Label:
                     size_hint: 1, 0.2
                     text: 'INFORMACION DE LA SESION'
@@ -43,47 +39,9 @@
                 Label:
                     font_size: '20sp'
                     id: info_carpeta
-                #Label:
-                #    text:''
 				Image:
 					size_hint: 1,0.9
 					source: root.source_preview
-                #Button:
-                #    size_hint: 1, 0.8
-                #    id:btn_local
-                #    text: 'Carpetas Locales lala'
-                #    on_release: 
-                #        #filechooser.rootpath = '/home/fede/Escritorio/SESIONES'
-                        #filechooser.path =  '/home/fede/Escritorio/SESIONES'
-                        #filechooser.rootpath = 'sesion/'
-                        #filechooser.path =  'sesion/'
-                #Button:
-                #    size_hint:  1, 0.8
-                #    id:btn_externo
-                #    text: 'Carpeta Externa'
-                #    on_release: 
-                        #filechooser.rootpath = '/media/fede'
-                        #filechooser.path = '/media/fede'
-                #        filechooser.rootpath = '/media/fede'
-                #        filechooser.path = '/media/fede'
-                    
-        #BoxLayout:
-        #    size_hint_y: None
-        #    height: 60
-        #    Button:
-        #        text: "Salir"
-        #        font_size: '20sp'
-        #        on_release: exit()
-		#
-        #    Button:
-        #        text: "Cargar"
-        #        font_size: '20sp'
-        #        on_release: 
-        #            root.path = filechooser.path
-        #            root.selection =filechooser.selection
-        #            root.load(filechooser.path, filechooser.selection)
-        #            print 'lalala'
-        #            app.cargar()
 
 <Pantalla_Revisar>:
     btn_playpausa: btn_playpausa
@@ -103,8 +61,6 @@
         BoxLayout:
             orientation: 'vertical'
             BoxLayout:
-                #size_hint: 1,0.45
-                #size: 1300, 600
                 orientation: 'horizontal'
                 spacing: 10
                 BoxLayout:
@@ -121,7 +77,6 @@
                     Button:
                         text: 'Comentar' 
                         font_size:'20sp'
-                        #on_release: root.adherir_comentario()
                         on_release: root.pre_marcar()
                 ImageButton:
                     id:img1
@@ -130,7 +85,6 @@
                 BoxLayout:
                     size_hint:0.2,1
                     orientation: 'vertical'
-                     #   spacing: 10
                     Button:
                         text: '>'
                         font_size:'20sp'
@@ -140,7 +94,6 @@
                         font_size:'20sp'
                         on_release: root.marca_siguiente()
                     TextInput:
-                        #size_hint: .6,.2
                         pos_hint: {'center_x': 0.5}
                         id:comentario
                         text: ''    
@@ -148,14 +101,6 @@
             BoxLayout:
                 #size_hint: 1,.2
                 orientation: 'horizontal'
-        #        Button:
-            #            text: 'Marcar Imagen'
-            #            on_release: root.pre_marcar()
-            #        BoxLayout:
-            #            orientation: 'horizontal'
-                        
-                    
-                
                 ImageButton:
                     id:img2
                     source: 'imagenCamara2.jpg'
